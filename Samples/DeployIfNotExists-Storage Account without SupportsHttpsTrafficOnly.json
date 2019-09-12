@@ -1,0 +1,74 @@
+{
+  "properties": {
+    "displayName": "Storage Account set HttpsEnabled If not Exists",
+    "policyType": "Custom",
+    "mode": "All",
+    "metadata": {
+      "category": "xxxxxxxxxxxxxx",
+      "createdBy": "xxxxxxxxxxxxxxxx",
+      "createdOn": "xxxxxxxxxxxxxxxxxxxxx",
+      "updatedBy": "xxxxxxxxxxxxxxxxxx",
+      "updatedOn": "xxxxxxxxxxxxxxxxxxxxxxxxxxx"
+    },
+    "parameters": {},
+    "policyRule": {
+      "if": {
+        "allOf": [
+          {
+            "field": "type",
+            "equals": "Microsoft.Storage/storageAccounts"
+          }
+        ]
+      },
+      "then": {
+        "effect": "deployIfNotExists",
+        "details": {
+          "type": "Microsoft.Authorization/locks",
+          "roleDefinitionIds": [
+            "/subscriptions/{subscriptionId}/providers/Microsoft.Authorization/roleDefinitions/{roleDefinitionId}"
+          ],
+          "existenceCondition": {
+            "field": "Microsoft.Authorization/locks/level",
+            "equals": "CanNotDelete"
+          },
+          "deployment": {
+            "properties": {
+              "mode": "incremental",
+              "template": {
+                "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+                "contentVersion": "1.0.0.0",
+                "parameters": {
+                  "storageAccountName": {
+                    "type": "string"
+                  },
+                  "storageAccountLocation": {
+                    "type": "string"
+                  }
+                },
+                "resources": [
+                  {
+                    "type": "Microsoft.Storage/storageAccounts",
+                    "apiVersion": "2018-07-01",
+                    "name": "[parameters('storageAccountName')]",
+                    "location": "[parameters('storageAccountLocation')]",
+                    "properties": {
+                      "supportsHttpsTrafficOnly": true
+                    }
+                  }
+                ]
+              },
+              "parameters": {
+                "storageAccountName": {
+                  "value": "[field('fullName')]"
+                },
+                "storageAccountLocation": {
+                  "value": "[field('location')]"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

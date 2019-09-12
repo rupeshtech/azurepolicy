@@ -1,0 +1,34 @@
+{
+  "properties": {
+    "displayName": "Audits all Resource Groups for CanNotDelete Resource Lock",
+    "policyType": "Custom",
+    "mode": "All",
+    "metadata": {
+      "createdBy": "xxxxxxxxxxxxxxxxxxxxxxxxx",
+      "createdOn": "xxxxxxxxxxxxxxxxxxxx",
+      "updatedBy": null,
+      "updatedOn": null
+    },
+    "parameters": {},
+    "policyRule": {
+      "if": {
+        "allOf": [
+          {
+            "field": "type",
+            "equals": "Microsoft.Resources/subscriptions/resourceGroups"
+          }
+        ]
+      },
+      "then": {
+        "effect": "auditIfNotExists",
+        "details": {
+          "type": "Microsoft.Authorization/locks",
+          "existenceCondition": {
+            "field": "Microsoft.Authorization/locks/level",
+            "equals": "CanNotDelete"
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,34 @@
+{
+  "properties": {
+    "displayName": "SupportsHttpsTrafficOnly in Storage Account should be enabled",
+    "policyType": "Custom",
+    "mode": "All",
+    "metadata": {
+      "category": "xxxxxxxxxxxx",
+      "createdBy": "xxxxxxxxxxxxxxxxxxxxxx",
+      "createdOn": "xxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+      "updatedBy": null,
+      "updatedOn": null
+    },
+    "parameters": {},
+    "policyRule": {
+      "if": {
+        "allOf": [
+          {
+            "field": "type",
+            "equals": "Microsoft.Storage/storageAccounts"
+          },
+          {
+            "not": {
+              "field": "Microsoft.Storage/storageAccounts/supportsHttpsTrafficOnly",
+              "equals": "true"
+            }
+          }
+        ]
+      },
+      "then": {
+        "effect": "deny"
+      }
+    }
+  }
+}
