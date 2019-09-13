@@ -14,7 +14,7 @@ function Get-AccessToken {
         Connect-AzAccount
         $context = Get-AzContext
     }
-    Set-AzContext -SubscriptionId $SubscriptionId
+    
     $cache = $context.TokenCache
     $cacheItemToUse = $cache.ReadItems()
 
@@ -63,6 +63,7 @@ function Get-Status {
 }
 
 $token = Get-AccessToken
+Set-AzContext -SubscriptionId $SubscriptionId
 
 $headers = @{
     Authorization = "Bearer $token"
